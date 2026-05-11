@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Import config (YAML)</h2>
+<form method="post" enctype="multipart/form-data" class="auth-card">
+  <label>YAML file<input type="file" name="file"></label>
+  <button class="btn primary block">Upload</button>
+</form>
+{% if output %}<pre class="output">{{ output }}</pre>{% endif %}
+<p><a href="/admin">← back to admin</a></p>
+{% endblock %}

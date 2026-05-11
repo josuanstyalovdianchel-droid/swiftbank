@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% block title %}SwiftBank — Personal Banking{% endblock %}</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="icon" type="image/svg+xml" href="/static/img/logo.svg">
+</head>
+<body>
+<header class="site-header">
+  <div class="container nav">
+    <a href="/" class="brand">
+      <img src="/static/img/logo.svg" alt="">
+      <span>SwiftBank</span>
+    </a>
+    <nav>
+      {% if user %}
+        <a href="/dashboard">Dashboard</a>
+        <a href="/transfer">Transfer</a>
+        <a href="/transactions">Transactions</a>
+        <a href="/support">Support</a>
+        {% if user.role == 'admin' %}<a href="/admin">Admin</a>{% endif %}
+        <a href="/profile" class="me">
+          <img class="avatar-mini" src="{{ user.avatar }}" alt=""> {{ user.username }}
+        </a>
+        <a href="/logout">Logout</a>
+      {% else %}
+        <a href="/login">Sign in</a>
+        <a href="/register" class="cta">Open account</a>
+      {% endif %}
+    </nav>
+  </div>
+</header>
+<main class="container">
+{% block content %}{% endblock %}
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <p>&copy; 2026 SwiftBank — Banking should be effortless.</p>
+    <p class="muted">Member FDIC · <a href="/debug">status</a></p>
+  </div>
+</footer>
+</body>
+</html>

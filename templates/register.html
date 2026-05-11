@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="auth-wrap">
+  <form method="post" action="/register" class="auth-card">
+    <h2>Open your SwiftBank account</h2>
+    {% if error %}<p class="error">{{ error }}</p>{% endif %}
+    <label>Full name<input name="full_name" required></label>
+    <label>Email<input name="email" type="email" required></label>
+    <label>Username<input name="username" required></label>
+    <label>Password<input name="password" type="password" required></label>
+    <label>Opening deposit (€)<input name="balance" type="number" value="0" step="0.01"></label>
+    <!-- VULN: role accepted from the form (mass assignment) -->
+    <input type="hidden" name="role" value="customer">
+    <button class="btn primary block">Create account</button>
+  </form>
+</div>
+{% endblock %}

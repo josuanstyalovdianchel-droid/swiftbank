@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Admin console</h2>
+<p class="muted">Internal banking operations</p>
+
+<section class="admin-tools">
+  <form method="get" action="/admin/ping" class="auth-card">
+    <h3>Network ping</h3>
+    <label>Host<input name="host" value="127.0.0.1"></label>
+    <button class="btn ghost block">Run</button>
+  </form>
+  <form method="get" action="/admin/verify-bank" class="auth-card">
+    <h3>Verify external bank</h3>
+    <label>URL<input name="url" placeholder="https://api.partner-bank.com/verify"></label>
+    <button class="btn ghost block">Verify</button>
+  </form>
+  <form method="get" action="/admin/calc" class="auth-card">
+    <h3>FX calculator</h3>
+    <label>Expression<input name="expr" value="100*1.07"></label>
+    <button class="btn ghost block">Compute</button>
+  </form>
+  <form method="post" action="/admin/import-config" enctype="multipart/form-data" class="auth-card">
+    <h3>Import config (YAML)</h3>
+    <label>File<input type="file" name="file"></label>
+    <button class="btn ghost block">Upload</button>
+  </form>
+</section>
+
+<h3>Users</h3>
+<table class="data">
+  <thead><tr><th>id</th><th>username</th><th>name</th><th>email</th><th>role</th><th>SSN</th></tr></thead>
+  <tbody>
+  {% for u in users %}
+    <tr><td>{{ u.id }}</td><td>{{ u.username }}</td><td>{{ u.full_name }}</td><td>{{ u.email }}</td><td>{{ u.role }}</td><td>{{ u.ssn }}</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+<h3>Accounts</h3>
+<table class="data">
+  <thead><tr><th>id</th><th>holder</th><th>number</th><th>kind</th><th>balance</th></tr></thead>
+  <tbody>
+  {% for a in accounts %}
+    <tr><td>{{ a.id }}</td><td>{{ a.username }}</td><td>{{ a.number }}</td><td>{{ a.kind }}</td><td>€ {{ '%.2f' % a.balance }}</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

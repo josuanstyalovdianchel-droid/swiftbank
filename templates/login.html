@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="auth-wrap">
+  <form method="post" action="/login" class="auth-card">
+    <h2>Sign in to SwiftBank</h2>
+    {% if error %}<p class="error">{{ error }}</p>{% endif %}
+    <label>Username<input name="username" autofocus required></label>
+    <label>Password<input name="password" type="password" required></label>
+    <input type="hidden" name="next" value="{{ next }}">
+    <button class="btn primary block">Continue</button>
+    <p class="muted"><a href="/forgot">Forgot password?</a> · <a href="/register">Open an account</a></p>
+  </form>
+</div>
+{% endblock %}

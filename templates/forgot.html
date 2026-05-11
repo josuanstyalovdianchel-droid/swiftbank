@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="auth-wrap">
+  <form method="post" action="/forgot" class="auth-card">
+    <h2>Reset your password</h2>
+    {% if error %}<p class="error">{{ error }}</p>{% endif %}
+    <label>Username<input name="username" required></label>
+    <button class="btn primary block">Send reset link</button>
+    {% if token %}
+      <p class="hint">Demo: open <a href="/reset?token={{ token }}">/reset?token={{ token }}</a></p>
+    {% endif %}
+  </form>
+</div>
+{% endblock %}

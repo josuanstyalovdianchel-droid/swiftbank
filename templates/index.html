@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <div>
+    <span class="kicker">Banking, redefined</span>
+    <h1>One account.<br>Every move you make.</h1>
+    <p>Send money instantly across SEPA, track your spending, and grow your savings — all from a single dashboard built for people who think in seconds, not statements.</p>
+    <div class="hero-cta">
+      <a class="btn primary" href="/register">Open an account</a>
+      <a class="btn ghost" href="/login">Sign in</a>
+    </div>
+    <p class="hint">Demo creds: <code>johndoe / P@ssw0rd</code> · <code>janedoe / spring2025</code> · <code>admin / admin2025</code></p>
+  </div>
+  <div class="card-mock">
+    <div class="bankcard">
+      <div class="bankcard-top">
+        <span>SwiftBank</span>
+        <span class="chip"></span>
+      </div>
+      <div class="bankcard-num">4242 · 8810 · 2031 · 0042</div>
+      <div class="bankcard-bot">
+        <span>JOHN DOE</span>
+        <span>11/29</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features">
+  <div class="feature">
+    <h3>Instant SEPA</h3>
+    <p>Move euros to any IBAN in under 10 seconds, 24/7.</p>
+  </div>
+  <div class="feature">
+    <h3>Smart vaults</h3>
+    <p>Split your money into goal-based pots that earn 3.2% APY.</p>
+  </div>
+  <div class="feature">
+    <h3>Insights</h3>
+    <p>Auto-categorised spending and live cash-flow forecasts.</p>
+  </div>
+  <div class="feature">
+    <h3>Bank-grade security</h3>
+    <p>Two-factor login, biometric approvals and real-time alerts.</p>
+  </div>
+</section>
+{% endblock %}

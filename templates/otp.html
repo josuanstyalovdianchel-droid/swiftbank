@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="auth-wrap">
+  <form method="post" action="/otp" class="auth-card">
+    <h2>Two-factor authentication</h2>
+    <p class="muted">We sent a 4-digit code to your phone.</p>
+    {% if error %}<p class="error">{{ error }}</p>{% endif %}
+    <label>Code<input name="code" maxlength="4" autofocus required></label>
+    <input type="hidden" name="next" value="{{ next }}">
+    <button class="btn primary block">Verify</button>
+    <!-- demo helper — VULN: OTP echoed back to the page -->
+    <p class="hint">Demo hint: your code is <code>{{ hint }}</code></p>
+  </form>
+</div>
+{% endblock %}

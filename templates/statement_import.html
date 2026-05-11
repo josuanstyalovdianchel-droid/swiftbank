@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Import legacy XML statement</h2>
+<p class="muted">Paste an XML statement exported from your previous bank.</p>
+<form method="post" class="auth-card">
+  <label>XML
+    <textarea name="xml" rows="10" placeholder="<statement>...</statement>"></textarea>
+  </label>
+  <button class="btn primary block">Import</button>
+</form>
+{% if error %}<p class="error">{{ error }}</p>{% endif %}
+{% if result %}<h3>Parsed</h3><pre class="output">{{ result }}</pre>{% endif %}
+{% endblock %}

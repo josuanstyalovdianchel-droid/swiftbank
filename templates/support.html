@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Contact support</h2>
+<p class="muted">Use double-brace placeholders to personalise the message, e.g. <code>{% raw %}Hi {{ user.full_name }}{% endraw %}</code>.</p>
+<div class="profile-grid">
+  <form method="post" action="/support" class="auth-card">
+    <label>Subject<input name="subject" placeholder="e.g. Card not working"></label>
+    <label>Message<textarea name="body" rows="6"></textarea></label>
+    <button class="btn primary block">Send</button>
+  </form>
+
+  {% if preview %}
+  <div class="auth-card">
+    <h3>Preview</h3>
+    <!-- VULN: render_template_string preview — SSTI -->
+    <div class="preview">{{ preview|safe }}</div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
