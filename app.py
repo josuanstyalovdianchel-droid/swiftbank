@@ -670,15 +670,20 @@ def admin():
 
 
 # VULN #39 — Command injection in admin ping (shell=True with string concat).
+import re
+
 @app.route("/admin/ping")
 @require_login
 def admin_ping():
     host = request.args.get("host", "127.0.0.1")
-    out = subprocess.run("ping -c 1 " + host, shell=True, capture_output=True, text=True)
+    # Validate host is a safe IP address or hostname (alphanumeric, dots, hyphens)
+    if not re.match(r'^[a-zA-Z0-9\.\-]+$', host):
+        return render_template("admin_result.html", title="Ping", output="Invalid host")
+    out = subprocess.run(["ping", "-c", "1", host], capture_output=True, text=True)
     return render_template("admin_result.html", title="Ping", output=out.stdout + out.stderr)
 
 
-# VULN #40 — SSRF via "verify external bank account" tool. No allowlist of schemes/hosts;
+
 # `file://`, internal IPs, cloud metadata IPs are all reachable.
 @app.route("/admin/verify-bank")
 @require_login
