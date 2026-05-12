@@ -1,0 +1,56 @@
+name: PLEXALYZER Analysis
+on:
+  pull_request:
+    types: [opened, synchronize]
+    branches:
+      - main
+
+  push:
+    branches:
+      - main
+
+jobs:
+  analyze:
+    if: >
+      (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'Plexicus-AI-Remediation-')) ||
+      github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get Changed Files in PR
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          echo "Analyzing changed files in the PR..."
+          changed_files=$(git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}")
+          echo "$changed_files" | jq -R -s -c 'split("\n")[:-1]' > files_to_scan.json
+
+      - name: Get All Files for Push
+        if: github.event_name == 'push'
+        shell: bash
+        run: |
+          echo "Analyzing all files in the repository..."
+          all_files=$(git ls-files)
+          echo "$all_files" | jq -R -s -c 'split("\n")[:-1]' > files_to_scan.json
+
+      - name: Set files_path environment variable
+        shell: bash
+        run: |
+          echo "files_path=$(pwd)/files_to_scan.json" >> $GITHUB_ENV
+
+      - name: Run PLEXALYZER Analysis
+        uses: plexicus/plexicus-action@main
+        with:
+          plexalyzer-token: ${{ secrets.PLEXALYZER_TOKEN }}
+          default-owner: ${{ github.event.repository.owner.login }}
+          repo-id: ${{ vars.COVULOR_REPO_ID }}
+          repo-name: ${{ github.repository }}
+          branch: ${{ github.event.pull_request.base.ref || github.ref_name }}
+          url: ${{ github.event.repository.clone_url }}
+          pr-id: ${{ github.event.pull_request.number }}
+          files-path: ${{ env.files_path }}
+          workspace-path: ${{ github.workspace }}
