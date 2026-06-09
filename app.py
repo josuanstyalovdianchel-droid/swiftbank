@@ -42,7 +42,20 @@ os.makedirs(IMPORTS, exist_ok=True)
 SECRET_KEY = "dev"
 
 # VULN #2 — Hardcoded JWT signing key, committed in source.
-JWT_KEY = "swiftbank-jwt-2025"
+# FIX: Read from environment variable; fail if not set in production.
+JWT_KEY = os.environ.get("JWT_SECRET_KEY", None)
+if JWT_KEY is None:
+    # Provide a clear error so deployers know to set it, rather than silently falling
+    # back to a weak default. In demo/lab mode a warning is printed.
+    if os.environ.get("SWIFTBANK_INSECURE_DEMO"):
+        JWT_KEY = "swiftbank-jwt-2025"
+        import warnings
+        warnings.warn("Using hardcoded demo JWT key. Set JWT_SECRET_KEY env var for production.")
+    else:
+        raise RuntimeError(
+            "JWT_SECRET_KEY environment variable is not set. "
+            "Set it to a strong random secret, or set SWIFTBANK_INSECURE_DEMO=1 to use the insecure default."
+        )
 
 # VULN #3 — Hardcoded admin backdoor token honored anywhere `X-Admin-Token` header is sent.
 ADMIN_BACKDOOR = "let-me-in-please"
